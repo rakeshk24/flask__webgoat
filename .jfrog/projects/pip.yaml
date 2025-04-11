@@ -1,0 +1,8 @@
+version: 1
+type: pip
+resolver:
+    repo: rk-pypi-virtual
+    serverId: soleng-saas
+deployer:
+    repo: rk-pypi-virtual
+    serverId: soleng-saas
