@@ -1,0 +1,49 @@
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+strategy:
+  matrix:
+    Python310:
+      python.version: '3.10'
+
+steps:  
+- task: JfrogCliV2@1
+  inputs:
+    jfrogPlatformConnection: 'rkr-soleng-platform'
+    command: 'jf rt ping'
+
+- task: JFrogAudit@1
+  inputs:
+    xrayConnection: 'rkr-soleng-xr'
+    watchesSource: 'watches'
+    watches: 'ado-watch'
+    allowFailBuild: true
+
+- task: JFrogPip@1
+  inputs:
+    artifactoryConnection: 'rkr-soleng-rt'
+    command: 'install'
+    targetResolveRepo: 'rk-pypi-virtual'
+    collectBuildInfo: true
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    includeEnvVars: true
+
+
+- task: JFrogPublishBuildInfo@1
+  inputs:
+    artifactoryConnection: 'rkr-soleng-rt'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+
+- task: JFrogBuildScan@1
+  inputs:
+    xrayConnection: 'rkr-soleng-xr'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    allowFailBuild: true
+    vuln: true
