@@ -27,6 +27,7 @@ steps:
   inputs:
     artifactoryConnection: 'rkr-soleng-rt'
     command: 'install'
+    arguments: './'
     targetResolveRepo: 'rk-pypi-virtual'
     collectBuildInfo: true
     buildName: '$(Build.DefinitionName)'
@@ -47,3 +48,6 @@ steps:
     buildNumber: '$(Build.BuildNumber)'
     allowFailBuild: true
     vuln: true
+
+
+
