@@ -1,0 +1,3 @@
+.jfrog/
+build/
+*.egg-info/
